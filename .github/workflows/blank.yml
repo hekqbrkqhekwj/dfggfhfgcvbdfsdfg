@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       # Paralel çalışacak makine sayısını, hızlı başlatma limitini aşmayacak şekilde 50'ye düşürdük.
-      max-parallel: 500
+      max-parallel: 255
       matrix:
         # Maksimum matris öğesi sayısı: 256'ya kadar uzatıldı! 
         # (instance: [1, 2, 3, ..., 256])
