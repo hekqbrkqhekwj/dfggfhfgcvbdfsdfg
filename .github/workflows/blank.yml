@@ -9,26 +9,29 @@ jobs:
     steps:
       - name: Sifre ve SSH Ayarla
         run: |
-          # Kullanıcı adını 'runner' olarak düzelttik
-          # Sifre: 123456
+          # Kullanıcı: runner | Sifre: 123456
           echo "runner:123456" | sudo chpasswd
           sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
           sudo service ssh restart
 
       - name: Ngrok Kur ve Bagla
         run: |
-          wget -q https://bin.equinox.io/c/b348wp7w7ra/ngrok-v3-stable-linux-amd64.tgz
-          tar -xvzf ngrok-v3-stable-linux-amd64.tgz
-          chmod +x ngrok
-          ./ngrok config add-authtoken ${{ secrets.NGROK_TOKEN }}
-          ./ngrok tcp 22 &
+          # Güncel Ngrok indirme linki
+          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+          echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+          sudo apt update && sudo apt install ngrok
+          
+          # Token ekleme ve başlatma
+          ngrok config add-authtoken ${{ secrets.NGROK_TOKEN }}
+          ngrok tcp 22 &
           sleep 10
 
       - name: Adresi Al
         run: |
           echo "--------------------------------------------------"
           echo "👇👇 PUTTY ADRESI ASAGIDA 👇👇"
-          curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+          # Ngrok adresini çekmenin en sağlam yolu
+          curl -s http://localhost:4040/api/tunnels | grep -o 'tcp://[^"]*'
           echo "Kullanici: runner | Sifre: 123456"
           echo "--------------------------------------------------"
           
