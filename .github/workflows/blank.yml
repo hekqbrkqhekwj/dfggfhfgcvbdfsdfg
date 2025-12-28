@@ -7,14 +7,15 @@ jobs:
   terminal-ac:
     runs-on: ubuntu-latest
     steps:
-      - name: Sifre Koy
+      - name: Sifre ve SSH Ayarla
         run: |
-          # Putty ile girerken lazim olacak sifre: 123456
-          echo "runneradmin:123456" | sudo chpasswd
+          # Kullanıcı adını 'runner' olarak düzelttik
+          # Sifre: 123456
+          echo "runner:123456" | sudo chpasswd
           sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
           sudo service ssh restart
 
-      - name: Ngrok Kur
+      - name: Ngrok Kur ve Bagla
         run: |
           wget -q https://bin.equinox.io/c/b348wp7w7ra/ngrok-v3-stable-linux-amd64.tgz
           tar -xvzf ngrok-v3-stable-linux-amd64.tgz
@@ -25,7 +26,11 @@ jobs:
 
       - name: Adresi Al
         run: |
+          echo "--------------------------------------------------"
+          echo "👇👇 PUTTY ADRESI ASAGIDA 👇👇"
           curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+          echo "Kullanici: runner | Sifre: 123456"
+          echo "--------------------------------------------------"
           
       - name: Bekle
         run: sleep 21600
