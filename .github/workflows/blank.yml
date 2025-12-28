@@ -1,32 +1,13 @@
-name: SERVEO-PUTTY-BAGLANTISI
+name: TMATE-PUTTY-BAGLANTISI
 
 on:
   workflow_dispatch:
 
 jobs:
-  terminal-ac:
+  terminal:
     runs-on: ubuntu-latest
     steps:
-      - name: Sifre ve SSH Ayarla
-        run: |
-          echo "runner:123456" | sudo chpasswd
-          sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-          sudo service ssh restart
-
-      - name: Serveo Baglantisi Kur (Ozel Isimli)
-        run: |
-          # 'poyraz' ismini almaya calisiyoruz, doluysa rastgele verir
-          ssh -o StrictHostKeyChecking=no -R poyraz:22:localhost:22 serveo.net > serveo.log 2>&1 &
-          sleep 10
-          cat serveo.log # Adresi loglarda görmek için
-          
-      - name: Adresi Ekrana Bas
-        run: |
-          echo "--------------------------------------------------"
-          echo "👇👇 PUTTY ADRESIN BURADA 👇👇"
-          grep -o '[a-zA-Z0-9.-]*\.serveo\.net' serveo.log || echo "Adres alinmadi, logu kontrol et."
-          echo "Kullanici: runner | Sifre: 123456 | Port: 22"
-          echo "--------------------------------------------------"
-          
-      - name: Bekle
-        run: sleep 21600
+      - name: Terminali Ac ve Bekle
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: false
