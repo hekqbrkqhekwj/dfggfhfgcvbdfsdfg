@@ -1,18 +1,22 @@
-name: OLUMSUZ-TMATE-TERMINAL 😈
+name: 20x-ORDU-TERMINAL-CANLI 😈
 
 on:
   workflow_dispatch:
 
 jobs:
-  terminal:
+  ates-hatti:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false # Bir makine kapanırsa diğerleri durmasın
+      matrix:
+        node: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    
     steps:
-      - name: tmate Ac
+      - name: Terminali Hazirla (Node ${{ matrix.node }})
         uses: mxschmitt/action-tmate@v3
         with:
           limit-access-to-actor: false
-          
-      - name: SAKIN KAPANMA (6 SAAT)
-        run: |
-          echo "Terminal kapansa bile ben buradayim kanka!"
-          sleep 21600
+
+      - name: Olumsuzluk Kilidi
+        if: always() # tmate kapansa bile makineyi 6 saat acik tutar
+        run: sleep 21600
