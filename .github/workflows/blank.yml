@@ -1,8 +1,31 @@
-- name: Ngrok ile Putty Baglantisi
+name: NGROK-PUTTY-BAGLANTISI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terminal-ac:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sifre Koy
         run: |
-          wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-          unzip ngrok-stable-linux-amd64.zip
-          ./ngrok authtoken ${{ secrets.NGROK_TOKEN }}
+          # Putty ile girerken lazim olacak sifre: 123456
+          echo "runneradmin:123456" | sudo chpasswd
+          sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+          sudo service ssh restart
+
+      - name: Ngrok Kur
+        run: |
+          wget -q https://bin.equinox.io/c/b348wp7w7ra/ngrok-v3-stable-linux-amd64.tgz
+          tar -xvzf ngrok-v3-stable-linux-amd64.tgz
+          chmod +x ngrok
+          ./ngrok config add-authtoken ${{ secrets.NGROK_TOKEN }}
           ./ngrok tcp 22 &
-          sleep 5
+          sleep 10
+
+      - name: Adresi Al
+        run: |
           curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+          
+      - name: Bekle
+        run: sleep 21600
