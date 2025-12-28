@@ -1,15 +1,8 @@
-name: TekPoyraz - CANLI TERMINAL 😈
-
-on:
-  workflow_dispatch:
-
-jobs:
-  terminal:
-    runs-on: ubuntu-latest
-    # Sadece 1 makine açıyoruz, kafan karışmasın
-    steps:
-      - name: Makineyi Hazırla ve Bekle
-        uses: mxschmitt/action-tmate@v3
-        with:
-          # Bağlandığında terminalin kapanmaması için limit koymuyoruz
-          limit-access-to-actor: false
+- name: Ngrok ile Putty Baglantisi
+        run: |
+          wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+          unzip ngrok-stable-linux-amd64.zip
+          ./ngrok authtoken ${{ secrets.NGROK_TOKEN }}
+          ./ngrok tcp 22 &
+          sleep 5
+          curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
