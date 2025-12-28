@@ -1,4 +1,4 @@
-name: NGROK-PUTTY-BAGLANTISI
+name: SERVEO-PUTTY-BAGLANTISI
 
 on:
   workflow_dispatch:
@@ -14,26 +14,22 @@ jobs:
           sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
           sudo service ssh restart
 
-      - name: Ngrok Kur ve Bagla
+      - name: Serveo ile Baglanti Kur
         run: |
-          # Güncel Ngrok indirme linki
-          curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
-          echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
-          sudo apt update && sudo apt install ngrok
+          # Serveo üzerinden 22 portunu dışarı açıyoruz
+          # serveo.net üzerinden bir tünel oluşturur
+          ssh -o StrictHostKeyChecking=no -R 80:localhost:22 serveo.net > serveo.log 2>&1 &
+          sleep 5
           
-          # Token ekleme ve başlatma
-          ngrok config add-authtoken ${{ secrets.NGROK_TOKEN }}
-          ngrok tcp 22 &
-          sleep 10
-
       - name: Adresi Al
         run: |
           echo "--------------------------------------------------"
-          echo "👇👇 PUTTY ADRESI ASAGIDA 👇👇"
-          # Ngrok adresini çekmenin en sağlam yolu
-          curl -s http://localhost:4040/api/tunnels | grep -o 'tcp://[^"]*'
-          echo "Kullanici: runner | Sifre: 123456"
+          echo "👇👇 PUTTY BILGILERI 👇👇"
+          echo "Host Name: serveo.net"
+          echo "Kullanici: runner"
+          echo "Sifre: 123456"
           echo "--------------------------------------------------"
+          echo "Not: Eger baglantı koparsa workflow loglarını kontrol et."
           
       - name: Bekle
         run: sleep 21600
